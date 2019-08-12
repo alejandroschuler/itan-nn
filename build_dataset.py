@@ -112,8 +112,8 @@ def split_encounter_files(
         cohort_file,
         hourly_file,
         out_dir,
-        cohort_encounter_column="sim:ENCOUNTER_ID",
-        hourly_encounter_column="sim:PAT_ENC_CSN_ID",
+        cohort_encounter_column="encounter_id",
+        hourly_encounter_column="pat_enc_csn_id",
         chunksize=10**6,
         split_cohort=False):
     logging.info("Splitting dataset to individual files for each encounter ID to {}".format(out_dir))
@@ -128,7 +128,7 @@ def split_encounter_files(
         with tqdm(total=len(cohort_df)) as t:
             for ei, encounter_id in enumerate(cohort_encounter_ids):
                 enc_chunk = cohort_df.loc[(cohort_df[cohort_encounter_column] == encounter_id), :]
-                encounter_filepath = os.path.join(out_dir, "itan_hourly_enc_{}.h5".format(encounter_id))
+                encounter_filepath = os.path.join(out_dir, "enc_{}.h5".format(encounter_id))
                 enc_chunk.to_hdf(encounter_filepath, key="cohort", append=True, mode='a', format='t')
                 t.update()
                 # if ei >= 99: break
@@ -232,9 +232,9 @@ if __name__ == '__main__':
 
     itan_data = f"{Path.home()}/data/itan"
     # Split the dataset into individual .h5 files for each patient encounter
-    split_encounter_files(cohort_file = f"{itan_data}/itan_cohort_v.tsv",
-                          hourly_file = f"{itan_data}/itan_patient_hourly_v.tsv",
-                          out_dir = f"{itan_data}/itan_hourly_encounter_splits/",
+    split_encounter_files(cohort_file = f"{itan_data}/cohort.tsv",
+                          hourly_file = f"{itan_data}/hourly.tsv",
+                          out_dir = f"{itan_data}/encounter_splits/",
                           chunksize=10**5)
 
 

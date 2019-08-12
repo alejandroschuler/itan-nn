@@ -1,15 +1,16 @@
 {
-    "predict_remaining_LoS": true,
-    "included_features": [
-        "static",
-        "hourly",
-        "strain"
-    ],
+    "output_type": "classification",
+    "project_dir": "/home/jovyan/code/itan-nn",
+    "data_dir": "/home/jovyan/data/itan",
+    "cohort_file": "itan_cohort_v.h5",
     "sample_dir": "Data/itan_hourly_encounter_splits",
-    "subset": 0,
-    "split_file": "set_splits_1000.json",
-    "data_dir": "Data",
-    "predict_after_hours": 0,
+    "label": "LOS",
+    "cohort_features": [
+        "ADM_LAPS2",
+        "ADM_COPS2",
+        "SEX",
+        "AGE"
+    ],
     "hourly_features": [
         "LAPS2",
         "IMAR_IM_GROUP",
@@ -25,11 +26,6 @@
         "OT_L_GROUP",
         "OT_N_GROUP"
     ],
-    "project_dir": "..",
-    "pad_value": 0,
-    "associated_time_max": 96,
-    "numpy_random_seed": 7532941,
-    "unit_hourly_hidden_size1": 64,
     "all_locations": [
         "OR",
         "WARD",
@@ -37,35 +33,39 @@
         "TCU",
         "PAR"
     ],
-    "normalize_hourly": true,
-    "num_layers": 5,
-    "dropout_prob": 0.0,
-    "num_hourly_output_features": 32,
-    "num_epochs": 100,
-    "max_occupancy": 150,
-    "patient_hourly_hidden_size": 32,
-    "torch_random_seed": 7532941,
-    "cross_validation_ratios": {
-        "test": 0.1,
-        "train": 0.8,
-        "val": 0.1
-    },
-    "cohort_features": [
-        "ADM_LAPS2",
-        "ADM_COPS2",
-        "SEX",
-        "AGE"
-    ],
-    "association_history": 0,
-    "hourly_embedding_fill_value": 0,
-    "output_type": "classification",
-    "cohort_file": "itan_cohort_v.h5",
-    "learning_rate": 0.01,
-    "normalize_cohort": true,
-    "max_associated_patients": 200,
-    "model_name": "itan_strain_classification_net",
-    "unit_hourly_hidden_size2": 128,
-    "label": "LOS",
     "pad_length": 96,
-    "batch_size": 10
+    "association_history": 0,
+    "associated_time_max": 96,
+    "max_associated_patients": 200,
+    "max_occupancy": 150,
+    "pad_value": 0,
+    "hourly_embedding_fill_value": 0,
+    "patient_hourly_hidden_size": 32,
+    "unit_hourly_hidden_size1": 64,
+    "unit_hourly_hidden_size2": 128,
+    "num_hourly_output_features": 32,
+    "num_layers": 5,
+    "model_name": "itan_strain_classification_net",
+    "included_features": [
+        "static",
+        "hourly",
+        "strain"
+    ],
+    "predict_remaining_LoS": true,
+    "predict_after_hours": 0,
+    "num_epochs": 100,
+    "batch_size": 10,
+    "learning_rate": 0.01,
+    "dropout_prob": 0.0,
+    "cross_validation_ratios": {
+        "train": 0.8,
+        "val": 0.1,
+        "test": 0.1
+    },
+    "split_file": "set_splits_1000.json",
+    "subset": 0,
+    "torch_random_seed": 7532941,
+    "numpy_random_seed": 7532941,
+    "normalize_cohort": true,
+    "normalize_hourly": true
 }

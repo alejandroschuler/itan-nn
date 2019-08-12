@@ -14,10 +14,10 @@ import os
 from pprint import pprint, pformat
 
 # Basis Expansion (external package)
-from basis_expansions import (Binner, Polynomial, 
-                              LinearSpline, CubicSpline,
-                              NaturalCubicSpline)
-from dftransformers import ColumnSelector, FeatureUnion, Intercept, MapFeature
+# from basis_expansions import (Binner, Polynomial, 
+#                               LinearSpline, CubicSpline,
+#                               NaturalCubicSpline)
+# from dftransformers import ColumnSelector, FeatureUnion, Intercept, MapFeature
 
 # Machine Learning
 from sklearn.pipeline import Pipeline
@@ -190,7 +190,7 @@ class ITANStrainDataset(skorch.dataset.Dataset):
             for sample_id in sample_ids:
                 filepath = os.path.join(self.params.project_dir,
                                         self.params.sample_dir,
-                                        "itan_hourly_enc_{}.h5".format(sample_id))
+                                        "enc_{}.h5".format(sample_id))
 
                 # Load patient hourly data
                 sample_hourly_df = pd.read_hdf(filepath, key="hourly").reset_index()
@@ -735,7 +735,7 @@ if __name__ == '__main__':
             "project_dir": "..",  # Top-level path for this project
             "data_dir": "Data",  # Relative data path
             "cohort_file": "itan_cohort_v.h5",  # File path to the cohort dataset (hdf5)
-            "sample_dir": "Data/itan_hourly_encounter_splits",  # Directory to the split patient hourly data
+            "sample_dir": "Data/encounter_splits",  # Directory to the split patient hourly data
             "label": "LOS",  # Column name of target/label in cohort dataframe
             "cohort_features": ["ADM_LAPS2", "ADM_COPS2", "SEX", "AGE"],  # Which cohort-level features to use
             "hourly_features": ["LAPS2"],#, "IMAR_IM_GROUP"],  # Which patient hourly features to use
