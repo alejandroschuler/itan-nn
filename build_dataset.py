@@ -1,5 +1,7 @@
 """ Reformat the raw ITAN dataset to digestible format
 """
+from env import data_dir
+
 import logging
 import argparse
 import os, shutil
@@ -230,11 +232,10 @@ if __name__ == '__main__':
 
     # build_patient_split_dataset("../Data/itan_patient_hourly_v.tsv", "../Data/itan_patient_hourly_v_patientkeyed.h5")
 
-    itan_data = f"{Path.home()}/data/itan"
     # Split the dataset into individual .h5 files for each patient encounter
-    split_encounter_files(cohort_file = f"{itan_data}/cohort.tsv",
-                          hourly_file = f"{itan_data}/hourly.tsv",
-                          out_dir = f"{itan_data}/encounter_splits/",
+    split_encounter_files(cohort_file = f"{data_dir}/cohort.tsv",
+                          hourly_file = f"{data_dir}/hourly.tsv",
+                          out_dir = f"{data_dir}/encounter_splits/",
                           chunksize=10**5)
 
 
