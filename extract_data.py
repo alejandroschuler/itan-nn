@@ -11,7 +11,7 @@ def fetchall_df(result_proxy):
     dataframe with correct column names instead of a list of tuples 
     (rows) with no column names
     """
-    result = [row for i, row in enumerate(tqdm(result_proxy))]
+    result = [row for row in tqdm(result_proxy)]
     return pd.DataFrame(result, columns=result[0].keys())
 
 hourly_q = """
