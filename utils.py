@@ -216,7 +216,11 @@ class Params():
     def save(self, json_path):
         # Save parameters to json file
         import utils
+        import pathlib
         utils.ensure_directory(os.path.dirname(json_path))
+        for k,v in self.__dict__.items():
+            if type(v) is pathlib.PosixPath:
+                self.__dict__[k] = str(v)
         with open(json_path, 'w') as f:
             json.dump(self.__dict__, f, indent=4)
             

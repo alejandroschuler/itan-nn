@@ -2,8 +2,8 @@
     "output_type": "classification",
     "project_dir": "/home/jovyan/code/itan-nn",
     "data_dir": "/home/jovyan/data/itan",
-    "cohort_file": "itan_cohort_v.h5",
-    "sample_dir": "Data/itan_hourly_encounter_splits",
+    "cohort_file": "/home/jovyan/data/itan/cohort.h5",
+    "sample_dir": "/home/jovyan/data/itan/encounter_splits",
     "label": "LOS",
     "cohort_features": [
         "ADM_LAPS2",
@@ -62,8 +62,8 @@
         "val": 0.1,
         "test": 0.1
     },
-    "split_file": "set_splits_1000.json",
-    "subset": 0,
+    "split_file": "/home/jovyan/data/itan/set_splits_1000.json",
+    "subset": 100,
     "torch_random_seed": 7532941,
     "numpy_random_seed": 7532941,
     "normalize_cohort": true,

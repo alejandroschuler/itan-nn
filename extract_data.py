@@ -11,6 +11,7 @@ def fetchall_df(result_proxy):
     dataframe with correct column names instead of a list of tuples 
     (rows) with no column names
     """
+#     result = result_proxy.fetchall(keep_col_names=T) ???
     result = [row for row in tqdm(result_proxy)]
     return pd.DataFrame(result, columns=result[0].keys())
 
@@ -22,6 +23,9 @@ cohort_q = """
     select * 
     from doretl.ITAN_COHORT_V
 """
-for query, filename in zip((hourly_q, cohort_q), ("hourly.tsv", "cohort.tsv")):
+queries = (hourly_q, cohort_q)
+filenames = ("hourly.tsv", "cohort.tsv")
+
+for query, filename in zip(queries, filenames):
     result = rdb.execute(query)
     fetchall_df(result).to_csv(data_dir/filename, sep="\t")
