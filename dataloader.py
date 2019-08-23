@@ -139,7 +139,7 @@ class ITANStrainDataset(skorch.dataset.Dataset):
         cohort_df = pd.read_hdf(os.path.join(self.params.project_dir, self.params.data_dir, self.params.cohort_file),
                                 start=0, 
                                 stop=-1) # note: loading all features and dropping after cleaning sim/src
-        cohort_df.columns = [c.split(':')[1] for c in cohort_df.columns] # clean sim/src headers for fuzzed dataset
+        cohort_df.columns = [x.upper() for x in cohort_df.columns] # code originally developed on a dataset with a different naming convention for columns, because of course it was, this is KP.
         cohort_df.set_index("ENCOUNTER_ID", inplace=True)
         cohort_df = cohort_df.loc[:, [self.params.label]+self.params.cohort_features]
         logging.debug("Loaded {} samples from cohort-level data".format(cohort_df.shape))

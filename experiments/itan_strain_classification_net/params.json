@@ -64,6 +64,7 @@
     },
     "split_file": "/home/jovyan/data/itan/set_splits_1000.json",
     "subset": 100,
+    "subset_facility": null,
     "torch_random_seed": 7532941,
     "numpy_random_seed": 7532941,
     "normalize_cohort": true,
