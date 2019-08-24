@@ -3,6 +3,12 @@ from env import data_dir
 from pathlib import Path
 from tqdm import tqdm
 
+# TO FIX:
+# THE SPLITTING SCRIPT KILLS ALL THE COLUMN NAMES
+# resplit
+# in this script, also read in the first row of the unsplit file as column names
+# and explicitly set the column names as such in the tsv_to_h5 function here
+
 def tsv_to_h5(file_path, key):
     pd.read_csv(
         file_path,

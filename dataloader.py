@@ -190,13 +190,11 @@ class ITANStrainDataset(skorch.dataset.Dataset):
             for sample_id in sample_ids:
                 filepath = os.path.join(self.params.project_dir,
                                         self.params.sample_dir,
-                                        "enc_{}.h5".format(sample_id))
+                                        f"{sample_id}.h5")
 
                 # Load patient hourly data
                 sample_hourly_df = pd.read_hdf(filepath, key="hourly").reset_index()
                 sample_hourly_df.drop('index', axis=1, inplace=True)
-                sample_hourly_df.columns = [c.split(':')[1] for c in sample_hourly_df.columns] # clean sim/src headers for fuzzed dataset
-
                 # Set index to start of each hour (rounded to :00) and drop unused hourly features
                 sample_hourly_df[index_column] =  pd.to_datetime(sample_hourly_df[index_column]).dt.round('1H')  
                 sample_hourly_df.set_index(index_column, inplace=True)
