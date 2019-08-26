@@ -3,6 +3,7 @@
     "project_dir": "/home/jovyan/code/itan-nn",
     "data_dir": "/home/jovyan/data/itan",
     "cohort_file": "/home/jovyan/data/itan/cohort.h5",
+    "hourly_file": "/home/jovyan/data/itan/hourly.tsv",
     "sample_dir": "/home/jovyan/data/itan/encounter_splits",
     "label": "LOS",
     "cohort_features": [

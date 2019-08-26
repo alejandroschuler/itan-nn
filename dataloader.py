@@ -50,6 +50,8 @@ class ITANStrainDataset(skorch.dataset.Dataset):
         """
         self.show_progress_bar = show_progress_bar
         self.params = params
+        with open(self.params.hourly_file) as f:
+            self.col_names = [col.strip().upper() for col in f.readline().split('\t')]
         self.sample_ids = list(set(sample_ids))  # drop duplicates from [list]
         logging.debug("Sample IDs:  {}\n{}".format(len(self.sample_ids), self.sample_ids[:5]))
         
@@ -188,12 +190,16 @@ class ITANStrainDataset(skorch.dataset.Dataset):
         all_hourly_lengths = pd.Series(index=sample_ids)
         with tqdm(total=len(sample_ids), desc="Sample IDs", disable=~self.show_progress_bar) as ts:
             for sample_id in sample_ids:
+#                 filepath = os.path.join(self.params.project_dir,
+#                                         self.params.sample_dir,
+#                                         f"{sample_id}.h5")
                 filepath = os.path.join(self.params.project_dir,
                                         self.params.sample_dir,
-                                        f"{sample_id}.h5")
+                                        f"{sample_id}.tab")
 
                 # Load patient hourly data
-                sample_hourly_df = pd.read_hdf(filepath, key="hourly").reset_index()
+#                 sample_hourly_df = pd.read_hdf(filepath, key="hourly").reset_index()
+                sample_hourly_df = pd.read_csv(filepath, sep='\t', names=self.col_names).reset_index()
                 sample_hourly_df.drop('index', axis=1, inplace=True)
                 # Set index to start of each hour (rounded to :00) and drop unused hourly features
                 sample_hourly_df[index_column] =  pd.to_datetime(sample_hourly_df[index_column]).dt.round('1H')  
