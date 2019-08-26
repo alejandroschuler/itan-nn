@@ -1,6 +1,6 @@
-awk -F'\t' '!_[$1]++ { 
+awk -F'\t' '!_[$3]++ { 
   fn && close(fn)
-  fn = $1 ".tab"
+  fn = $3 ".tab"
   }
 { print > fn }
-' enc_output.tsv
+' encout_stripped.tsv

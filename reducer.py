@@ -7,12 +7,13 @@ encounters = {}
 
 for line in sys.stdin:
     details = line.split("\t")
-    enc = details[2]
+    enc = details[0]
+    row = details[1:]
 
     if enc not in encounters.keys():
-        encounters[enc] = [details]
+        encounters[enc] = [row]
     else:
-        encounters[enc].append(details)
+        encounters[enc].append(row)
 
 for enc, rows in encounters.items():
     for row in rows:
