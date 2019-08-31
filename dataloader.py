@@ -600,8 +600,7 @@ class ITANStrainDataset(skorch.dataset.Dataset):
         # Reshape to associated patients x time steps
         # Convert hourly time mask to numpy / uint8 for batching
         # Boolean would be ideal if ever implemented for PyTorch types
-        sample_hourly_timemask = torch.zeros((self.params.max_associated_patients, self.params.associated_time_max),
-                                          dtype=torch.bool)
+        sample_hourly_timemask = torch.zeros((self.params.max_associated_patients, self.params.associated_time_max), dtype=torch.bool)
         sample_hourly_timemask[:int(sample_associated_patient_count), :] = torch.from_numpy(associated_patient_time_scatter_mask.values.astype(np.bool).T)
         
         # Reshape the hourly occupancies and convert to numpy for batching
