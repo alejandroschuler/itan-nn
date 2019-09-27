@@ -635,7 +635,7 @@ class ITANStrainDataset(skorch.dataset.Dataset):
                 
         # Create gather index to re-gather the per-sample hourly data from where it was scattered in shared time index
         sample_hourly_time_gather_index = np.zeros(shape=(self.params.pad_length), dtype=np.int64)
-        patient_start_in_shared_index = self.params.associated_time_max = self.params.pad_length
+        patient_start_in_shared_index = self.params.associated_time_max - self.params.pad_length
         patient_end_in_shared_index = min(patient_start_in_shared_index + sample_hourly_lengths[0], self.params.associated_time_max)
         patient_len_in_shared_index = patient_end_in_shared_index - patient_start_in_shared_index  # how much of the sample_id hourly data falls within the shared time index
         sample_hourly_time_gather_index[:patient_len_in_shared_index] = np.arange(patient_start_in_shared_index, patient_end_in_shared_index)
@@ -666,6 +666,11 @@ class ITANStrainDataset(skorch.dataset.Dataset):
 #                                                                  sample_hourly_locations.shape[1]),
 #                                                           dtype=np.int64)),
 #                                                 axis=0)
+        sample_global_hourly_embeddings = torch.full(size=(self.params.max_associated_patients,
+                                                                self.params.associated_time_max,
+                                                                self.params.patient_hourly_hidden_size),
+                                                          fill_value=self.params.hourly_embedding_fill_value,
+                                                          dtype=torch.float32).cuda()
         logging.debug("Hourly location indices:  {}\n{}".format(sample_hourly_locations.shape, sample_hourly_locations[:5]))    
     
     
@@ -681,7 +686,18 @@ class ITANStrainDataset(skorch.dataset.Dataset):
         ))
         
         # Bundle all arrays/values for batching, and return
-        sample = (sample_associated_patient_count, sample_static_features, sample_hourly_locations, sample_hourly_time_gather_index, associated_patient_location_gather_index, sample_hourly_features, sample_hourly_lengths, sample_hourly_timemask, sample_hourly_occupancies)
+        sample = (sample_associated_patient_count,
+                  sample_static_features, 
+                  sample_hourly_locations, 
+                  sample_hourly_time_gather_index, 
+                  associated_patient_location_gather_index, 
+                  sample_hourly_features, 
+                  sample_hourly_lengths, 
+                  sample_hourly_timemask, 
+                  sample_hourly_occupancies,
+                  sample_global_hourly_embeddings)
+#         [print(type(x)) for x in sample]
+#         sample = tuple(torch.from_numpy(x).cuda() if type(x) is np.ndarray else x.cuda() for x in sample)
         
         # Create the label
         if self.params.predict_remaining_LoS:
@@ -722,7 +738,8 @@ class ITANStrainDataset(skorch.dataset.Dataset):
             self.target[index] = yi  
         else:
             self.target[index, :] = yi
-        return sample, yi
+        
+        return sample, torch.from_numpy(yi).cuda()
 
 
 if __name__ == '__main__':

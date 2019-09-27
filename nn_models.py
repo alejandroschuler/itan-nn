@@ -177,7 +177,7 @@ class ITANStrainNetworkModule(nn.Module):
         """
         shape_debug = False
         # Extract bundled batch data
-        patient_association_count, patient_static_features, patient_hourly_locations, patient_hourly_time_gather_index, associated_patient_location_gather_index, patient_hourly_features, patient_hourly_lengths, patient_hourly_timemask, patient_hourly_occupancies = inputs
+        patient_association_count, patient_static_features, patient_hourly_locations, patient_hourly_time_gather_index, associated_patient_location_gather_index, patient_hourly_features, patient_hourly_lengths, patient_hourly_timemask, patient_hourly_occupancies, patient_global_hourly_embeddings = inputs
         sample_batch_size = patient_static_features.size()[0]
         if shape_debug: logging.info("Batch Static Features: {}, type {}".format(patient_static_features.size(), patient_static_features.dtype))
         if shape_debug: logging.info("Batch Hourly Locations (gather index): {}, type {}".format(patient_hourly_locations.size(), patient_hourly_locations.dtype))
@@ -226,12 +226,7 @@ class ITANStrainNetworkModule(nn.Module):
         if "strain" in self.params.included_features:
             # Get batch-associated patient hourly embeddings on global time index, index out patients for each unit at each time
             # The shape of mask must be broadcastable with the shape of the underlying tensor.
-            patient_global_hourly_embeddings = torch.full(size=(sample_batch_size,
-                                                                self.params.max_associated_patients,
-                                                                self.params.associated_time_max,
-                                                                self.params.patient_hourly_hidden_size),
-                                                          fill_value=self.params.hourly_embedding_fill_value,
-                                                          dtype=torch.float32)
+            
             patient_global_hourly_embeddings.masked_scatter_(patient_hourly_timemask.unsqueeze(3), patient_personal_hourly_embeddings)  # (batch_patients x time_max x patient_hourly_hidden_size)
             if shape_debug: logging.info("Patient Hourly Embeddings scattered to global-time: {}".format(patient_global_hourly_embeddings.size()))
                 
